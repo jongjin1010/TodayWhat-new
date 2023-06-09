@@ -8,6 +8,7 @@ const GlobalStyle = () => (
 
       body {
         font-family: "Noto Sans KR", sans-serif;
+        background-color: #eeeded;
       }
 
       * {
@@ -18,6 +19,7 @@ const GlobalStyle = () => (
         text-decoration: none;
         color: black;
       }
+
       button {
         background: inherit;
         border: none;
