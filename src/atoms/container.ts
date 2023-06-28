@@ -12,7 +12,7 @@ export const SignUpSectionAtom = atom({
 });
 
 export const UserDataAtom = atom<SignUpInterface>({
-  key: "userData",
+  key: v1(),
   default: {
     name: "",
     grade: 0,
