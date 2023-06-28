@@ -6,6 +6,7 @@ import axios from "axios";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import * as S from "./style";
+import { toast } from "react-toastify";
 
 function SchoolNameInputSection() {
   const [isReqEnd, setIsReqEnd] = useState<boolean>(true);
@@ -15,35 +16,43 @@ function SchoolNameInputSection() {
   const userData = useSetRecoilState(UserDataAtom);
 
   useEffect(() => {
-    getSchoolListBySchoolName();
-  }, [name]);
+    let timer: NodeJS.Timeout;
 
-  const getSchoolListBySchoolName = async () => {
+    const getSchoolListBySchoolName = async () => {
+      if (name) {
+        setIsReqEnd(false);
+        try {
+          const res: any = await axios.get(
+            `https://open.neis.go.kr/hub/schoolInfo?KEY=${process.env.NEXT_PUBLIC_API_KEY}&Type=json&SCHUL_NM=${name}`
+          );
+
+          const resultData = res.data.schoolInfo[1].row.slice(0, 6);
+          setData(resultData);
+        } catch {
+          toast.error("알 수 없는 오류에요");
+        } finally {
+          setIsReqEnd(true);
+        }
+      }
+    };
+
     if (name) {
       setIsReqEnd(false);
-      const data: Row[] = [];
-
-      try {
-        const res: any = await axios.get(
-          `https://open.neis.go.kr/hub/schoolInfo?KEY=${process.env.NEXT_PUBLIC_API_KEY}&Type=json&SCHUL_NM=${name}`
-        );
-
-        res.data.schoolInfo[1].row.forEach((item: Row, index: number) => {
-          if (index < 6) {
-            data.push(item);
-          }
-        });
-
-        setData(data);
-      } catch {
-        setIsReqEnd(true);
-      }
+      timer = setTimeout(() => {
+        getSchoolListBySchoolName();
+      }, 200);
+    } else {
       setIsReqEnd(true);
     }
-  };
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [name]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    const inputValue = e.target.value;
+    setName(inputValue);
   };
 
   const onItemClick = (item: Row) => {
@@ -64,7 +73,7 @@ function SchoolNameInputSection() {
         onChange={onChange}
         value={name}
       />
-      {isReqEnd && data && (
+      {isReqEnd && (
         <S.ResultBox>
           {data?.map((item) => (
             <S.ResultItem
