@@ -46,6 +46,8 @@ function InformationInputSection() {
             onChange={onChange}
             value={form.grade}
             placeholder="학년 입력"
+            min={1}
+            max={6}
           />
         </S.InputItem>
         <S.InputItem>
@@ -56,9 +58,10 @@ function InformationInputSection() {
             onChange={onChange}
             value={form.class}
             placeholder="반 입력"
+            min={1}
           />
         </S.InputItem>
-        {form.grade && form.class && (
+        {form.grade > 0 && form.grade < 7 && form.class > 0 && (
           <S.SignUpButton onClick={onSignUp}>확인</S.SignUpButton>
         )}
       </S.InputsWrapper>
