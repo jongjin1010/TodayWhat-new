@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import { v1 } from "uuid";
 import * as S from "./style";
+import Link from "next/link";
 
 function MainPage() {
   const router = useRouter();
@@ -116,7 +117,7 @@ function MainPage() {
 
   return (
     <S.MainPageLayout>
-      <Image width={120} height={40} alt="logo" src={"/images/Logo.png"} />
+      <Image width={120} height={40} alt="logo" src={"/images/Logo.svg"} />
       <S.MyInformation onClick={onEdit}>
         <S.School>{user.name}</S.School>
         <S.Student>{`${user.grade}학년 ${user.class}반`}</S.Student>
@@ -133,7 +134,9 @@ function MainPage() {
                 </S.LineBox>
                 <S.ItemBox>
                   {getMeal("조식")?.map((item: any) => (
-                    <S.MealItem key={v1()}>{item}</S.MealItem>
+                    <Link href={`https://www.google.com/search?q=${item}`}>
+                      <S.MealItem key={v1()}>{item}</S.MealItem>
+                    </Link>
                   ))}
                 </S.ItemBox>
               </S.MealBox>
@@ -147,7 +150,9 @@ function MainPage() {
                 </S.LineBox>
                 <S.ItemBox>
                   {getMeal("중식")?.map((item: any) => (
-                    <S.MealItem key={v1()}>{item}</S.MealItem>
+                    <Link href={`https://www.google.com/search?q=${item}`}>
+                      <S.MealItem key={v1()}>{item}</S.MealItem>
+                    </Link>
                   ))}
                 </S.ItemBox>
               </S.MealBox>
@@ -161,7 +166,9 @@ function MainPage() {
                 </S.LineBox>
                 <S.ItemBox>
                   {getMeal("석식")?.map((item: any) => (
-                    <S.MealItem key={v1()}>{item}</S.MealItem>
+                    <Link href={`https://www.google.com/search?q=${item}`}>
+                      <S.MealItem key={v1()}>{item}</S.MealItem>
+                    </Link>
                   ))}
                 </S.ItemBox>
               </S.MealBox>
